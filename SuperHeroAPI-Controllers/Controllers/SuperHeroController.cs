@@ -9,7 +9,7 @@ namespace SuperHeroAPI_Controllers.Controllers
     public class SuperHeroController : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetAllHeroes()
+        public async Task<ActionResult<List<SuperHero>>> GetAllHeroes()
         {
             var heroes = new List<SuperHero>
             {
