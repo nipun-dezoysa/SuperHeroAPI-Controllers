@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SuperHeroAPI_Controllers.Data;
+using SuperHeroAPI_Controllers.Dtos;
 using SuperHeroAPI_Controllers.Entities;
+using SuperHeroAPI_Controllers.Mapping;
 
 namespace SuperHeroAPI_Controllers.Controllers
 {
@@ -24,7 +26,7 @@ namespace SuperHeroAPI_Controllers.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<SuperHero>>> GetHero(int id)
+        public async Task<ActionResult<SuperHero>> GetHero(int id)
         {
             var hero = await _context.SuperHeroes.FindAsync(id);
             if (hero == null)
@@ -35,9 +37,9 @@ namespace SuperHeroAPI_Controllers.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<SuperHero>>> AddHero(SuperHero hero)
+        public async Task<ActionResult<List<SuperHero>>> AddHero(AddDto hero)
         {
-            _context.SuperHeroes.Add(hero);
+            _context.SuperHeroes.Add(hero.ToEntity());
             await _context.SaveChangesAsync();
             return Ok(await _context.SuperHeroes.ToListAsync());
         }
@@ -56,7 +58,7 @@ namespace SuperHeroAPI_Controllers.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<SuperHero>>> DeleteHero(int id)
+        public async Task<ActionResult> DeleteHero(int id)
         {
             await _context.SuperHeroes.Where(game=> game.Id == id).ExecuteDeleteAsync();
             return Ok("Hero deleted");
