@@ -41,5 +41,18 @@ namespace SuperHeroAPI_Controllers.Controllers
             await _context.SaveChangesAsync();
             return Ok(await _context.SuperHeroes.ToListAsync());
         }
+
+        [HttpPut]
+        public async Task<ActionResult<List<SuperHero>>> UpdateHero(SuperHero hero)
+        {
+            var exhero = await _context.SuperHeroes.FindAsync(hero.Id);
+            if (exhero == null)
+            {
+                return NotFound("Hero not found.");
+            }
+            _context.Entry(exhero).CurrentValues.SetValues(hero);
+            await _context.SaveChangesAsync();
+            return Ok(await _context.SuperHeroes.ToListAsync());
+        }
     }
 }
