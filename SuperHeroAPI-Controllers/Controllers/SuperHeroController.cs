@@ -54,5 +54,12 @@ namespace SuperHeroAPI_Controllers.Controllers
             await _context.SaveChangesAsync();
             return Ok(await _context.SuperHeroes.ToListAsync());
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<List<SuperHero>>> DeleteHero(int id)
+        {
+            await _context.SuperHeroes.Where(game=> game.Id == id).ExecuteDeleteAsync();
+            return Ok("Hero deleted");
+        }
     }
 }
